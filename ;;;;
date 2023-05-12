@@ -1,1 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>FaceBasin</title>
+</head>
+<body>
+<style>
+  body {
+    
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+  }
+</style>
 
+<h1>输入网址</h1>
+<form>
+  <label for="url">请输入网址:</label>
+  <input type="text" id="url" name="url">
+  <button type="button" onclick="submitUrl()">提交</button>
+  <input type="reset">
+</form>
+
+<h2>输入记录</h2>
+<form action="">
+  <button type="button" onclick="clearUrls()">清除记录</button>
+</form>
+<ul id="urlList">
+</ul>
+  
+<!-- 添加 Disqus 留言板功能 -->
+<div id="disqus_thread"></div>
+<script>
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://wind-5.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<!-- Disqus 留言板功能结束 -->
+<script>
+  function submitUrl() {
+    var urlInput = document.getElementById("url").value;
+    var url = "//z1.im1907.top/?jx=" + urlInput;
+    window.open(url, "_blank");
+
+    // 保存用户输入的记录到 localStorage 中
+    var urls = localStorage.getItem("urls");
+    if (!urls) {
+      urls = [];
+    } else {
+      urls = JSON.parse(urls);
+    }
+    urls.push(urlInput);
+    localStorage.setItem("urls", JSON.stringify(urls));
+
+    // 在用户界面上显示输入记录
+    var urlList = document.getElementById("urlList");
+    var li = document.createElement("li");
+    li.appendChild(document.createTextNode(urlInput));
+    urlList.appendChild(li);
+  }
+
+  function clearUrls() {
+    // 清除本地存储中的记录
+    localStorage.removeItem("urls");
+
+    // 清空用户界面上的记录列表
+    var urlList = document.getElementById("urlList");
+    while (urlList.firstChild) {
+      urlList.removeChild(urlList.firstChild);
+    }
+  }
+
+  // 页面加载完成后，将之前保存的输入记录显示到用户界面上
+  window.onload = function() {
+    var urls = localStorage.getItem("urls");
+    if (urls) {
+      urls = JSON.parse(urls);
+      var urlList = document.getElementById("urlList");
+      for (var i = 0; i < urls.length; i++) {
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(urls[i]));
+        urlList.appendChild(li);
+      }
+    }
+  };
+</script>
+</body>
+</html>
